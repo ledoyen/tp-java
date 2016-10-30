@@ -1,4 +1,4 @@
- #TP 1 : Objets et responsabilités
+# TP 1 : Objets et responsabilités
 
 L'intérêt de la programmation orientée objet est de modéliser en éléments interactifs un système. Ce découpage permet une maintenance du code plus simple, une facilité pour le test ou encore une meilleure lisibilité.
 SOLID résume les grands principes du développement orienté objet :
@@ -10,12 +10,18 @@ SOLID résume les grands principes du développement orienté objet :
 
 
 L’objectif de ce TP sera de mettre en pratique ces 4 des ces grands principes.
-La substitution de Lyskov ne sera volontairement pas couverte car il n’y aura pas besoin de faire de l’héritage.
+La substitution de Lyskov ne sera volontairement pas couverte car il n’y aura pas de notion d'héritage dans ce TP.
 
 Tout au long de ce TP des concepts génériques de programmation seront manipulés.
-Afin d’éviter de correspondre à la majorité des concepts sans faire d’anglicismes, les packages, classes, interface, méthodes, arguments et variables seront en Anglais.
+Afin d’éviter de correspondre à la majorité des concepts sans faire d’anglicismes, les packages, classes, interfaces, méthodes, arguments et variables seront en Anglais.
 
 ## Création d'un Logger
+Ce qu'on appelle couramment **Logger** est un objet qui a la responsabilité de produire le journal applicatif.
+Ce journal, qu'il soit dans la console ou dans un fichier permet de comprendre ce que fait le programme au travers de messages, qu'ils soient :
+* critiques (ex: le serveur distant n'est plus joignable)
+* informatifs (ex: tel utilisateur a fait telle opération)
+* de "debug" (ex: la requête au serveur distant a prit 39ms)
+
 Pour commencer, créer un package spécifique : `org.tp.logger`
 Dans ce package, créer une interface `Logger` avec une seule méthode abstraite :
 ```java
@@ -29,7 +35,7 @@ Créer enfin une classe `ConsoleFactory` ayant une méthode statique `getLogger(
 Le jeu ici sera de deviner un nombre que l'ordinateur aura choisi.
 Le joueur aura un retour après chaque tentative: plus grand ou plus petit.
 
-Dans un package `org.tp.guessgame` créer la classe l'interface `Player`.
+Dans un package `org.tp.guessgame` créer l'interface `Player`.
 Cette dernière aura les méthodes suivantes
 ```java
 long askNextGuess();
@@ -46,8 +52,8 @@ Créer une classe `Simulation` telle que:
 public class Simulation {
 
   private final Logger logger = LoggerFactory.getLogger("simulation");
-  private final ??? player;
-  private ??? numberToGuess;
+  private final ??? player;  //TODO add variable type
+  private ??? numberToGuess; //TODO add variable type
 
   public Simulation(Player player) {
     //TODO implement me
@@ -76,8 +82,9 @@ La méthode `nextRound` devra:
 * demander un nombre au joueur
 * vérifier s'il est égal, plus grand ou plus petit
   * s'il est égal, retourner `true`
-  * sinon, donner l'indice (plus grand ou plus petit) ou joueur et retourner `false`
-* Dans tous les cas, affichera via `logger` les informations permettant de suivre l'évolution de la partie
+  * sinon, donner l'indice (plus grand ou plus petit) au joueur et retourner `false`
+* dans tous les cas, affichera via `logger` les informations permettant de suivre l'évolution de la partie
+
 Enfin, la méthode `loopUntilPlayerSucceed` devra utiliser une boucle afin d'appeler `nextRound` jusqu'à ce que la partie soit finie.
 
 Créer enfin une classe `Launcher` avec une méthode statique `main` qui
