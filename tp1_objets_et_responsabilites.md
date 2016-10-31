@@ -10,7 +10,7 @@ SOLID résume les grands principes du développement orienté objet :
 
 
 L’objectif de ce TP sera de mettre en pratique 4 de ces grands principes.
-La substitution de Lyskov ne sera volontairement pas couverte car il n’y aura pas de notion d'héritage dans ce TP.
+L'utilisation de plusieurs interfaces ne sera pas couverte par ce TP.
 
 Tout au long de ce TP des concepts génériques de programmation seront manipulés.
 Afin d’éviter de correspondre à la majorité des concepts sans faire d’anglicismes, les packages, classes, interfaces, méthodes, arguments et variables seront en Anglais.
@@ -96,7 +96,7 @@ long randomNumber = random.nextLong();
 ```
 * lancera une partie en appelant la méthode `loopUntilPlayerSucceed`
 
-## EX 3: Lancement du programme
+## EX 3: Lancement du programme (optionnel)
 A la racine du projet, créer un script `buildAndLaunch.sh` qui devra:
 * compiler tous les fichiers *.java en utilisant la commande **javac**
 * lancer le programme en utilisant la commande **java**
@@ -108,6 +108,9 @@ Cette nouvelle classe aura la même *fonction* que `HumanPlayer`, mais sans dema
 L'algorithme de recherche dichotomique pouvant ne pas converger du premier coup, nous allons ajouter une sécurité.
 Modifier dans la classe `Simulation` la méthode `loopUntilPlayerSucceed` afin que celle-ci prenne en paramètre un nombre qui sera le  maximum d'itérations de la boucle.
 Cette même méthode devra également afficher à la fin de la partie le temps que celle-ci a prit au format `mm:ss.SSS` et si oui ou non le joueur a trouvé la solution avant la limite d'itération.
+
+Récupérer un timestamp ce fait avec le code `System.currentTimeMillis()`.
+La valeur retournée correspond au nombre de millisecondes entre le 1er Janvier 1970 et le moment où la fonction est appelée.
 
 Modifier la classe `Launcher` afin que celle-ci gère 3 cas par rapport aux paramètres passés en ligne de commande (`String[] args`):
 * si le premier argument vaut `-interactive`, alors utiliser la précédente façon de lancer le programme avec un `HumanPlayer` avec une limite d'itérations valant `Long.MAX_VALUE`
@@ -135,7 +138,7 @@ public void log(String message) {
 
 Enfin, modifier la classe `LoggerFactory` pour qu'elle produise une instance de `Logger` qui produira des messages enrichis dans la Console.
 
-Lancer le programe et vérifier que les messages apparaissent bien datés et avec la classe d'origine.
+Lancer le programme et vérifier que les messages apparaissent bien datés et avec la classe d'origine.
 
 En procédant ainsi on **compose** les objets `Logger` sans modifier leur comportement interne.
 Il est alors plus simple de remplacer, `ConsoleLogger` par un objet de type `FileLogger` qui ajouterai les messages dans un fichier tout en gardant le même enrichissement de message.
@@ -169,14 +172,36 @@ public class FileLogger implements Logger {
 
 Modifier le code de `LoggerFactory` afin que les messages soient produits dans un fichier sur le disque.
 
-Lancer le programe et vérifier que les messages apparaissent bien datés et avec la classe d'origine dans le fichier spécifié dans la classe `LoggerFactory`.
+Lancer le programme et vérifier que les messages apparaissent bien datés et avec la classe d'origine dans le fichier spécifié dans la classe `LoggerFactory`.
 
 # EX 6: Composition de plusieurs Loggers
-Ajouter les messages dans un fichier est pratique pour comprendre ce qui s'est passé à posteriori, cepandant ce n'est pas partique pour le développement.
+Ajouter les messages dans un fichier est pratique pour comprendre ce qui s'est passé à posteriori, cependant ce n'est pas pratique pour le développement.
 Nous allons donc combiner les deux loggers précédents en un seul.
 
 Pour cela, créer une nouvelle classe `CompositeLogger` implémentant `Logger`.
 Cette classe aura un constructeur prenant deux `Logger` en paramètres.
-La méthode `log` appelera successivement `log` sur les deux `Logger` resnseignés par construction.
+La méthode `log` appellera successivement `log` sur les deux `Logger` renseignés par construction.
 
 Modifier la classe `LoggerFactory` pour qu'elle renvoie un seul `Logger` écrivant les messages à la fois dans la Console et dans un fichier.
+
+# EX 7: 
+Afin d'y voir plus clair dans le diagnostic d'un comportement au travers d'un fichier de log, il peut être utile de filtrer certains messages afin de ne garder que ceux qui ont de l'intérêt.
+Nous allons donc filtrer les messages provenant des classes implémentant `Player` pour le `FileLogger`.
+
+Pour cela, créer une classe `FilteredLogger` implémentant `Logger` qui aura un constructeur avec deux paramètres:
+```java
+public FilteredLogger(Logger delegate, Predicate<String> condition) {
+  //TODO assign arguments to fields
+}
+```
+Implémenter la méthode log en testant si la condition valide le message donné en paramètre.
+Si la condition est vérifiée, appeler le `Logger` delegate avec le même paramètre. 
+
+L'interface `java.util.function.Predicate` modélise une condition sur un objet dont le type est spécifié entre chevron (ici `String`).
+Il est possible de l'implémenter de deux façon
+* avec une classe implémentant l'interface `Predicate`
+* avec une lambda, ex: `Predicate<String> condition = message -> !message.contains("player");`.
+Tous les messages qui ne contiennent pas le mot `"player"` valident cette condition.
+
+Modifier la classe `LoggerFactory` pour qu'elle produise un `Logger` qui affichera tous les messages dans la console et n'affichera que les messages de la classe `Simulation` dans un fichier
+
