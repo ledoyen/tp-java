@@ -1,4 +1,4 @@
-# TP 1 : Objets et responsabilités
+# TP 1: Objets et responsabilités
 
 L'intérêt de la programmation orientée objet est de modéliser en éléments interactifs un système. Ce découpage permet une maintenance du code plus simple, une facilité pour le test ou encore une meilleure lisibilité.
 SOLID résume les grands principes du développement orienté objet :
@@ -15,7 +15,7 @@ La substitution de Lyskov ne sera volontairement pas couverte car il n’y aura 
 Tout au long de ce TP des concepts génériques de programmation seront manipulés.
 Afin d’éviter de correspondre à la majorité des concepts sans faire d’anglicismes, les packages, classes, interfaces, méthodes, arguments et variables seront en Anglais.
 
-## Création d'un Logger
+## EX 1: Création d'un Logger
 Ce qu'on appelle couramment **Logger** est un objet qui a la responsabilité de produire le journal applicatif.
 Ce journal, qu'il soit dans la console ou dans un fichier permet de comprendre ce que fait le programme au travers de messages, qu'ils soient :
 * critiques (ex: le serveur distant n'est plus joignable)
@@ -31,7 +31,7 @@ Créer ensuite une classe `ConsoleLogger` implémentant `Logger` et affichant le
 
 Créer enfin une classe `LoggerFactory` ayant une méthode statique `getLogger(String name)` retournant une instance de `Logger`.
 
-## Modélisation d'un jeu : l'age du capitaine
+## EX 2: Modélisation d'un jeu : l'age du capitaine
 Le jeu ici sera de deviner un nombre que l'ordinateur aura choisi.
 Le joueur aura un retour après chaque tentative: plus grand ou plus petit.
 
@@ -83,7 +83,7 @@ La méthode `nextRound` devra:
 * vérifier s'il est égal, plus grand ou plus petit
   * s'il est égal, retourner `true`
   * sinon, donner l'indice (plus grand ou plus petit) au joueur et retourner `false`
-* dans tous les cas, affichera via `logger` les informations permettant de suivre l'évolution de la partie
+* dans tous les cas, afficher via `logger` les informations permettant de suivre l'évolution de la partie
 
 Enfin, la méthode `loopUntilPlayerSucceed` devra utiliser une boucle afin d'appeler `nextRound` jusqu'à ce que la partie soit finie.
 
@@ -95,3 +95,88 @@ SecureRandom random = new SecureRandom();
 long randomNumber = random.nextLong();
 ```
 * lancera une partie en appelant la méthode `loopUntilPlayerSucceed`
+
+## EX 3: Lancement du programme
+A la racine du projet, créer un script `buildAndLaunch.sh` qui devra:
+* compiler tous les fichiers *.java en utilisant la commande **javac**
+* lancer le programme en utilisant la commande **java**
+
+## EX 4: Création d'un utilisateur robot
+Le but de cet exercice est de créer une seconde implémentation de `Player`: `ComputerPlayer`.
+Cette nouvelle classe aura la même *fonction* que `HumanPlayer`, mais sans demander à l'utilisateur quoi que ce soit.
+
+L'algorithme de recherche dichotomique pouvant ne pas converger du premier coup, nous allons ajouter une sécurité.
+Modifier dans la classe `Simulation` la méthode `loopUntilPlayerSucceed` afin que celle-ci prenne en paramètre un nombre qui sera le  maximum d'itérations de la boucle.
+Cette même méthode devra également afficher à la fin de la partie le temps que celle-ci a prit au format `mm:ss.SSS` et si oui ou non le joueur a trouvé la solution avant la limite d'itération.
+
+Modifier la classe `Launcher` afin que celle-ci gère 3 cas par rapport aux paramètres passés en ligne de commande (`String[] args`):
+* si le premier argument vaut `-interactive`, alors utiliser la précédente façon de lancer le programme avec un `HumanPlayer` avec une limite d'itérations valant `Long.MAX_VALUE`
+* si le premier argument vaut `-auto` et le second argument est numérique, alors
+  * créer une nouvelle instance de `Simulation` avec un joueur `ComputerPlayer`
+  * initialiser cette instance avec le nombre donné comme second argument
+  * lancer une partie en appelant la méthode `loopUntilPlayerSucceed` et avec comme limite d'itération 10000
+* sinon afficher les deux "façons" de lancer le programme décrite ci-dessus afin de guider l'utilisateur
+
+Enfin, implémenter les méthodes de la classe `ComputerPlayer` afin que que la recherche de l'age du capitaine converge vers la solution.
+
+## EX 5: Simplification des messages de log
+A ce stade, des messages de logs provenant des classes `Launcher`, `Simulation`, `HumanPlayer` et `ComputerPlayer` se mélangent dans la console sans moyen de les distinguer.
+
+Nous allons donc créer, dans le package `org.tp.logger`, une nouvelle classe `ContextualLogger` implémentant `Logger`, qui prendra le nom d'une classe, ainsi qu'un autre `Logger` en paramètres de constructeur.
+Le but de ce `Logger` sera d'enrichir le message avec la date courante et le nom de la classe appelante.
+
+Il est nécessaire pour cela d'utiliser la classe  `java.text.SimpleDateFormat` avec un pattern tel que `"YYYY-MM-DD HH:mm:ss.SSS"`.
+La méthode `log` de cette implémentation devra elle-même appeler la méthode `log` de l'objet `Logger` passé par construction.
+```java
+public void log(String message) {
+  delegateLogger.log(DATE_FORMAT.format(new Date()) + " " + callerClass + " " + message);
+}
+```
+
+Enfin, modifier la classe `LoggerFactory` pour qu'elle produise une instance de `Logger` qui produira des messages enrichis dans la Console.
+
+Lancer le programe et vérifier que les messages apparaissent bien datés et avec la classe d'origine.
+
+En procédant ainsi on **compose** les objets `Logger` sans modifier leur comportement interne.
+Il est alors plus simple de remplacer, `ConsoleLogger` par un objet de type `FileLogger` qui ajouterai les messages dans un fichier tout en gardant le même enrichissement de message.
+
+Ecrire la classe `FileLogger` en utilisant le code ci-dessous
+```java
+import static java.nio.file.StandardOpenOption.APPEND;
+import static java.nio.file.StandardOpenOption.CREATE;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+public class FileLogger implements Logger {
+    private final Path path;
+
+    public FileLogger(String pathAsString) {
+        path = Paths.get(pathAsString).toAbsolutePath();
+    }
+
+    public void log(String message) {
+        try {
+            Files.write(path, (message + "\n").getBytes(), APPEND, CREATE);
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot write log message to file [" + path + "]", e);
+        }
+    }
+}
+```
+
+Modifier le code de `LoggerFactory` afin que les messages soient produits dans un fichier sur le disque.
+
+Lancer le programe et vérifier que les messages apparaissent bien datés et avec la classe d'origine dans le fichier spécifié dans la classe `LoggerFactory`.
+
+# EX 6: Composition de plusieurs Loggers
+Ajouter les messages dans un fichier est pratique pour comprendre ce qui s'est passé à posteriori, cepandant ce n'est pas partique pour le développement.
+Nous allons donc combiner les deux loggers précédents en un seul.
+
+Pour cela, créer une nouvelle classe `CompositeLogger` implémentant `Logger`.
+Cette classe aura un constructeur prenant deux `Logger` en paramètres.
+La méthode `log` appelera successivement `log` sur les deux `Logger` resnseignés par construction.
+
+Modifier la classe `LoggerFactory` pour qu'elle renvoie un seul `Logger` écrivant les messages à la fois dans la Console et dans un fichier.
