@@ -184,7 +184,7 @@ La méthode `log` appellera successivement `log` sur les deux `Logger` renseign�
 
 Modifier la classe `LoggerFactory` pour qu'elle renvoie un seul `Logger` écrivant les messages à la fois dans la Console et dans un fichier.
 
-# EX 7: 
+# EX 7: Encore plus de composition
 Afin d'y voir plus clair dans le diagnostic d'un comportement au travers d'un fichier de log, il peut être utile de filtrer certains messages afin de ne garder que ceux qui ont de l'intérêt.
 Nous allons donc filtrer les messages provenant des classes implémentant `Player` pour le `FileLogger`.
 
@@ -203,5 +203,6 @@ Il est possible de l'implémenter de deux façon
 * avec une lambda, ex: `Predicate<String> condition = message -> !message.contains("player");`.
 Tous les messages qui ne contiennent pas le mot `"player"` valident cette condition.
 
-Modifier la classe `LoggerFactory` pour qu'elle produise un `Logger` qui affichera tous les messages dans la console et n'affichera que les messages de la classe `Simulation` dans un fichier
+Modifier la classe `LoggerFactory` pour qu'elle produise un `Logger` qui affichera tous les messages dans la console et n'affichera que les messages de la classe `Simulation` dans un fichier.
+Les messages doivent tous être horodatés et indiquer de quelle classe ils proviennent.
 
