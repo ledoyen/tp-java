@@ -9,7 +9,7 @@ SOLID résume les grands principes du développement orienté objet :
 * Dependency inversion: travailler avec la forme la plus abstraite d’un objet (une interface en général)
 
 
-L’objectif de ce TP sera de mettre en pratique ces 4 des ces grands principes.
+L’objectif de ce TP sera de mettre en pratique 4 de ces grands principes.
 La substitution de Lyskov ne sera volontairement pas couverte car il n’y aura pas de notion d'héritage dans ce TP.
 
 Tout au long de ce TP des concepts génériques de programmation seront manipulés.
@@ -29,7 +29,7 @@ void log(String message);
 ```
 Créer ensuite une classe `ConsoleLogger` implémentant `Logger` et affichant le `message` passé en paramètre dans la console en utilisant `System.out`.
 
-Créer enfin une classe `ConsoleFactory` ayant une méthode statique `getLogger(String name)`.
+Créer enfin une classe `LoggerFactory` ayant une méthode statique `getLogger(String name)` retournant une instance de `Logger`.
 
 ## Modélisation d'un jeu : l'age du capitaine
 Le jeu ici sera de deviner un nombre que l'ordinateur aura choisi.
