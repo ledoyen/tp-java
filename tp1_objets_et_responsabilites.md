@@ -107,9 +107,9 @@ Cette nouvelle classe aura la même *fonction* que `HumanPlayer`, mais sans dema
 
 L'algorithme de recherche dichotomique pouvant ne pas converger du premier coup, nous allons ajouter une sécurité.
 Modifier dans la classe `Simulation` la méthode `loopUntilPlayerSucceed` afin que celle-ci prenne en paramètre un nombre qui sera le  maximum d'itérations de la boucle.
-Cette même méthode devra également afficher à la fin de la partie le temps que celle-ci a prit au format `mm:ss.SSS` et si oui ou non le joueur a trouvé la solution avant la limite d'itération.
+Cette même méthode devra également afficher à la fin de la partie le temps que celle-ci a pris au format `mm:ss.SSS` et si oui ou non le joueur a trouvé la solution avant la limite d'itération.
 
-Récupérer un timestamp ce fait avec le code `System.currentTimeMillis()`.
+Récupérer un timestamp se fait avec le code `System.currentTimeMillis()`.
 La valeur retournée correspond au nombre de millisecondes entre le 1er Janvier 1970 et le moment où la fonction est appelée.
 
 Modifier la classe `Launcher` afin que celle-ci gère 3 cas par rapport aux paramètres passés en ligne de commande (`String[] args`):
