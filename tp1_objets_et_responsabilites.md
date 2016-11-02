@@ -45,7 +45,7 @@ void respond(boolean lowerOrGreater);
 Créer une première implémentation qui utilisera votre interaction `HumanPlayer`.
 Cette classe utilisera
 * d'une part une instance de `Logger` donnée par `LoggerFactory` avec l'argument `"player"`
-* d'autre part la classe `java.lang.Scanner` de Java permettant de récupérer les entrées de l’utilisateur dans la console
+* d'autre part la classe `java.util.Scanner` de Java permettant de récupérer les entrées de l’utilisateur dans la console
 
 Créer une classe `Simulation` telle que:
 ```java
@@ -128,7 +128,7 @@ A ce stade, des messages de logs provenant des classes `Launcher`, `Simulation`,
 Nous allons donc créer, dans le package `org.tp.logger`, une nouvelle classe `ContextualLogger` implémentant `Logger`, qui prendra le nom d'une classe, ainsi qu'un autre `Logger` en paramètres de constructeur.
 Le but de ce `Logger` sera d'enrichir le message avec la date courante et le nom de la classe appelante.
 
-Il est nécessaire pour cela d'utiliser la classe  `java.text.SimpleDateFormat` avec un pattern tel que `"YYYY-MM-DD HH:mm:ss.SSS"`.
+Il est nécessaire pour cela d'utiliser la classe  `java.text.SimpleDateFormat` avec un pattern tel que `"YYYY-MM-dd HH:mm:ss.SSS"`.
 La méthode `log` de cette implémentation devra elle-même appeler la méthode `log` de l'objet `Logger` passé par construction.
 ```java
 public void log(String message) {
