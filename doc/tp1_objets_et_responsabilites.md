@@ -45,7 +45,7 @@ void respond(boolean lowerOrGreater);
 Créer une première implémentation qui utilisera votre interaction `HumanPlayer`.
 Cette classe utilisera
 * d'une part une instance de `Logger` donnée par `LoggerFactory` avec l'argument `"player"`
-* d'autre part la classe `java.lang.Scanner` de Java permettant de récupérer les entrées de l’utilisateur dans la console
+* d'autre part la classe `java.util.Scanner` de Java permettant de récupérer les entrées de l’utilisateur dans la console
 
 Créer une classe `Simulation` telle que:
 ```java
@@ -107,9 +107,9 @@ Cette nouvelle classe aura la même *fonction* que `HumanPlayer`, mais sans dema
 
 L'algorithme de recherche dichotomique pouvant ne pas converger du premier coup, nous allons ajouter une sécurité.
 Modifier dans la classe `Simulation` la méthode `loopUntilPlayerSucceed` afin que celle-ci prenne en paramètre un nombre qui sera le  maximum d'itérations de la boucle.
-Cette même méthode devra également afficher à la fin de la partie le temps que celle-ci a prit au format `mm:ss.SSS` et si oui ou non le joueur a trouvé la solution avant la limite d'itération.
+Cette même méthode devra également afficher à la fin de la partie le temps que celle-ci a pris au format `mm:ss.SSS` et si oui ou non le joueur a trouvé la solution avant la limite d'itération.
 
-Récupérer un timestamp ce fait avec le code `System.currentTimeMillis()`.
+Récupérer un timestamp se fait avec le code `System.currentTimeMillis()`.
 La valeur retournée correspond au nombre de millisecondes entre le 1er Janvier 1970 et le moment où la fonction est appelée.
 
 Modifier la classe `Launcher` afin que celle-ci gère 3 cas par rapport aux paramètres passés en ligne de commande (`String[] args`):
@@ -128,7 +128,7 @@ A ce stade, des messages de logs provenant des classes `Launcher`, `Simulation`,
 Nous allons donc créer, dans le package `org.tp.logger`, une nouvelle classe `ContextualLogger` implémentant `Logger`, qui prendra le nom d'une classe, ainsi qu'un autre `Logger` en paramètres de constructeur.
 Le but de ce `Logger` sera d'enrichir le message avec la date courante et le nom de la classe appelante.
 
-Il est nécessaire pour cela d'utiliser la classe  `java.text.SimpleDateFormat` avec un pattern tel que `"YYYY-MM-DD HH:mm:ss.SSS"`.
+Il est nécessaire pour cela d'utiliser la classe  `java.text.SimpleDateFormat` avec un pattern tel que `"YYYY-MM-dd HH:mm:ss.SSS"`.
 La méthode `log` de cette implémentation devra elle-même appeler la méthode `log` de l'objet `Logger` passé par construction.
 ```java
 public void log(String message) {
