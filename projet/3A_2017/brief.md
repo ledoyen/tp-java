@@ -111,7 +111,7 @@ Logger logger = LoggerFactory.dateAndTimeLogger(
 
 La librairie de test devra proposer une classe principale contenant une méthode `main` : **RunTest.java**
 Les tests seront lancés en utilisant la commande :
-`java -classpath <chemins vers les fichiers compilés, séparés par le caractère ':'> RunTest <chemins qualifié des classes de test, séparés par des espaces>`
+`java -classpath <chemins vers les fichiers compilés, séparés par le caractère ':'> RunTest <chemins qualifiés des classes de test, séparés par des espaces>`
 
 Le chemin qualifié d'une classe correspond à `<package>.<className>`.
 
@@ -130,7 +130,7 @@ Ainsi :
 
 De cette manière le code de la librairie de test pourra lister les méthodes d'une classe sans connaître à l'avance la classe en question.
 
-Voici un example de code pour transformer un objet de type `String` en objet de type `Class` :
+Voici un exemple de code pour transformer un objet de type `String` en objet de type `Class` :
 ```java
 String className = "logger.SampleTest";
 try {
@@ -141,7 +141,7 @@ try {
 }
 ```
 
-Voici un example de code listant les méthodes d'une classe :
+Voici un exemple de code listant les méthodes d'une classe :
 ```java
 import java.lang.reflect.Method;
 
@@ -154,7 +154,7 @@ for(Method method : clazz.getDeclaredMethods()) {
 }
 ```
 
-Enfin, voici un example de code pour exécuter le code pointé par un objet de type `Method` :
+Enfin, voici un exemple de code pour exécuter le code pointé par un objet de type `Method` :
 ```java
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
