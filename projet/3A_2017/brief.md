@@ -1,6 +1,6 @@
 # Sujet de Projet POO 3A 2017
 
-Date de rendu : 15 novembre 2017.
+Date de rendu : 27 novembre 2017.
 
 Le projet sera noté et reflètera les connaissances acquises durant le cours et les TPs.
 
@@ -18,7 +18,7 @@ Le projet sera noté et reflètera les connaissances acquises durant le cours et
 
 ## Structure du projet
 
-Le projet devra être envoyé par mail avant la date du 15 novembre 2017 à ledoyen.loic@gmail.com
+Le projet devra être envoyé par mail avant la date du 27 novembre 2017 à ledoyen.loic@gmail.com
 Le projet devra être envoyé sous la forme d'une archive `tar.gz` avec les noms complets des étudiants ayant participés.
 L'archive ne contiendra que des :
  * répertoires
