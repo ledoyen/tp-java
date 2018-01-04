@@ -31,6 +31,67 @@
     ~\\
 \end{frame}
 
+\begin{frame}
+	\frametitle{Git: commandes de base I}
+	Pour commencer :
+    \begin{itemize}
+      \item {\lstinline[basicstyle=\ttfamily\color{blue}]|git init|} initialise un d\'ep\^{o}t Git local
+      \item {\lstinline[basicstyle=\ttfamily\color{blue}]|git clone <url>|} clone un d\'ep\^{o}t distant
+	  \item (sous Windows) {\lstinline[basicstyle=\ttfamily\color{blue}]|git config core.fileMode false|} fait ignorer \`a git les changements de droits d'execution
+	  \item (sous Windows) {\lstinline[basicstyle=\ttfamily\color{blue}]|git update-index --chmod=+x <file>|} positione le bit d'execution sur le fichier $<$file$>$
+    \end{itemize}
+	Pour se mettre \`a jour :
+	\begin{itemize}
+      \item {\lstinline[basicstyle=\ttfamily\color{blue}]|git fetch --all --prune|} r\'ecup\`ere tous les changements sur le d\'ep\^{o}t distant
+      \item {\lstinline[basicstyle=\ttfamily\color{blue}]|git pull|} fusionne les changements distants avec les fichiers locaux (peut \'ecraser des changements locaux)
+	  \item (\'etant sur une branche $<$branch$>$) {\lstinline[basicstyle=\ttfamily\color{blue}]|git rebase origin/<branch>|} d\'eplace les commits locaux apr\`es les commits ayant \'et\'e pouss\'es sur le d\'ep\^{o}t distant
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Git: commandes de base II}
+	Pour changer de branche :
+	\begin{itemize}
+      \item {\lstinline[basicstyle=\ttfamily\color{blue}]|git checkout <branch>|} positionne les sources courantes sur la derni\`ere version de la branche $<$branch$>$
+      \item {\lstinline[basicstyle=\ttfamily\color{blue}]|git branch -b <branch>|} cr\'ee une branche de nom $<$branch$>$ dont le point de d\'epart est le commit courant
+    \end{itemize}
+	Pour apporter des changements :
+	\begin{itemize}
+      \item {\lstinline[basicstyle=\ttfamily\color{blue}]|git add <file>|} indexe le fichier $<$file$>$
+      \item {\lstinline[basicstyle=\ttfamily\color{blue}]|git add .|} indexe tous les fichiers modifi\'es (traverse les r\'epertoires)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Git: commandes de base III}
+	Pour observer les changements :
+    \begin{itemize}
+	  \item {\lstinline[basicstyle=\ttfamily\color{blue}]|git status|} affiche les diff\'erences entre les d\'epots local et distant
+      \item {\lstinline[basicstyle=\ttfamily\color{blue}]|git log --oneline -n 15|} affiche les 15 derniers commits de la branch courante avec leur hash r\'eduit
+	  \item {\lstinline[basicstyle=\ttfamily\color{blue}]|git diff --stat|} affiche un r\'esum\'e des changements
+      \item {\lstinline[basicstyle=\ttfamily\color{blue}]|git diff --word-diff=color <file>|} affiche les changements effectu\'es sur le fichier $<$file$>$
+    \end{itemize}
+	Pour historiser des changements :
+	\begin{itemize}
+      \item {\lstinline[basicstyle=\ttfamily\color{blue}]|git commit -m "<message>"|} commit les fichiers index\'es avec le message $<$message$>$
+      \item {\lstinline[basicstyle=\ttfamily\color{blue}]|git commit --fixup <hash>|} commit les fichiers index\'es comme correction d'un commit existant de hash $<$hash$>$
+	  \item {\lstinline[basicstyle=\ttfamily\color{blue}]|git rebase -i --autosquash <hash>|} fusionne les commits de fixup avec les commits normaux
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Git: commandes de base IV}
+	Pour publier des changements :
+	\begin{itemize}
+      \item {\lstinline[basicstyle=\ttfamily\color{blue}]|git push|} publie les changements de la branche courante si celle-ci est en avance par rapport au distant
+      \item {\lstinline[basicstyle=\ttfamily\color{blue}]|git push --force-with-lease|} \'ecrase la branche distante avec la branche courante sauf si un autre commit a \'et\'e fait entre-temps
+    \end{itemize}
+	
+	~\\~\\
+
+	Source : \url{https://git-scm.com/docs}
+\end{frame}
+
 \subsection{Moteur de construction}
 \begin{frame}
 	\frametitle{Build automation tool}
