@@ -1,0 +1,387 @@
+\section{Coder en \'{e}quipe}
+
+\begin{frame}
+    \begin{center}
+    \fontsize{48pt}{7.2}\selectfont
+    Coder en \'{e}quipe
+    \end{center}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Coder en \'{e}quipe}
+    
+    Les designs patterns sont des structures de codes, solutions simples \`{a} des probl\`{e}mes standards.
+    \\~\\
+    Lors des phases de conception ou de revue de code, l'\'{e}quipe peut se retrouver autour de design patterns : ils permettent de d\'{e}finir des standards justifiant les d\'{e}cisions.
+    \\~\\
+    Ils ne sont pas toujours la meilleure solution, car les probl\`{e}mes ne sont pas souvent standard.
+    \\~\\
+    Ils permettent de visualiser une m\'{e}canique de laquelle il est possible de s'inspirer.
+\end{frame}
+
+\begin{frame}
+	\frametitle{Les design-patterns du GoF}
+    Il y a 3 types principaux de design-patterns :
+     \begin{itemize}
+    	\item De cr\'{e}ation : se rapportant \`{a} l'instanciation d'objets
+        \item De structure : pour homog\'{e}n\'{e}iser les interactions entre objets
+        \item De comportement : pour r\'{e}pondre \`{a} des besoins sp\'{e}cifiques (Iterator par exemple)
+    \end{itemize}
+     ~\\
+    Un des design-pattern les plus connus est le singleton.
+    
+\end{frame}
+
+\subsection{Singleton vs Prototype}
+\begin{frame}[fragile]
+	\frametitle{Le singleton I}
+
+    Le design-pattern singleton est un objet qui ne peut \^{e}tre instanci\'{e} qu'une seule fois.
+    \\~\\
+    Il peut \^{e}tre n\'{e}cessaire d'obliger ce comportement afin d'\'{e}viter une consommation CPU inutile, ou de partager un \'{e}tat.
+    \\~\\
+    Son \'{e}criture la plus \'{e}l\'{e}gante en Java est de passer par un {\lstinline[basicstyle=\ttfamily\color{blue}]|Enum|}:
+    \\~\\
+    \begin{lstlisting}
+public enum Singleton {
+	INSTANCE;
+
+    // non-static methods
+}
+	\end{lstlisting}
+    \'{e}crit ainsi, le singleton est instanci\'{e} par le Classloader qui garantit son unicit\'{e}.
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Le singleton II}
+
+	Des adaptations peuvent \^{e}tre faites pour :
+    \begin{itemize}
+    	\item le \textit{multiton} (une instance par cl\'{e}), adaptation naturelle avec le singleton {\lstinline[basicstyle=\ttfamily\color{blue}]|Enum|}
+        \item l'instanciation \textit{au besoin}, gr\^{a}ce au m\'{e}canisme de singleton-holder
+        \item le singleton multi-jvm (souvent une mauvaise id\'{e}e), gr\^{a}ce \`{a} des solutions comme Terracotta, Hazelcast, etc.
+    \end{itemize}
+    ~\\
+    Cependant, dans la plupart des cas, l'utilisation d'un \textit{framework d'inversion
+    de contr\^{o}le} \'{e}loigne des probl\'{e}matiques d'impl\'{e}mentation en fournissant une API simple.
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Le prototype}
+
+    A l'inverse du \textit{singleton}, on qualifie de \textbf{prototype} une strat\'{e}gie d'instanciation qui fournit un nouvel objet \`{a} chaque appel.
+    \\~\\~\\
+    Ce n'est pas un design pattern officiel, mais c'est le pendant direct du \textit{singleton}.
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{La strat\'{e}gie d'instanciation}
+
+   On peut choisir de r\'{e}utiliser la m\^{e}me instance \`{a} chaque appel, on est dans le cas du singleton.
+   \\
+   On peut choisir de renvoyer une nouvelle instance \`{a} chaque appel, on est dans le cas du prototype.
+   \\~\\
+    La strat\'{e}gie d'instanciation est mat\'{e}rialis\'{e}e, dans le cas du prototype, par la \textbf{Factory}.
+    \\~\\
+    Pour s'abstraire de la strat\'{e}gie d'instanciation, on utilise un \textbf{Supplier}.
+    \\
+    Ainsi le code client n'a pas connaissance de la strat\'{e}gie d'instanciation.
+    \\
+    L'int\'{e}ret du Supplier est donc de pouvoir changer la strat\'{e}gie d'instanciation de mani\`{e}re transparente.
+\end{frame}
+
+\subsection{Factory vs new..new..new}
+\begin{frame}[fragile]
+	\frametitle{Factory vs new..new..new}
+
+    Il est possible de cr\'{e}er les objets \`{a} l'endroit o\`{u} ils sont n\'{e}cessaires, cependant il est alors compliqu\'{e} de changer les param\`{e}tres utilis\'{e}s lors de la construction, ou encore le type concret utilis\'{e}.
+    \\~\\
+    Afin de permettre ce genre de modification sans affecter l'ensemble du code, on peut d\'{e}gager cette partie dans un objet cr\'{e}ateur d'instances : une \textbf{Factory}.
+    \\~\\
+    \begin{lstlisting}
+public class VehiculeFactory {
+	Vehicule createCar(Color color, String numberplate) {
+      return new Car(color, numberplate);
+    }
+}
+	\end{lstlisting}
+
+    De ce design pattern d\'{e}coule le \textbf{Supplier}, dont la responsabilit\'{e} est de fournir des instances sans garantie qu'il s'agisse de nouvelles instances.
+\end{frame}
+
+\subsection{Inversion de contr\^{o}le vs couplage fort}
+
+\begin{frame}
+	\frametitle{Couplage fort / couplage l\^{a}che I}
+    
+ Le \textbf{couplage fort} correspond \`{a} la description d'un code o\`{u} une modification va n\'{e}cessairement entrainer un ou plusieurs autres changements par effets de bord.
+ \\~\\
+    Le \textbf{couplage fort} est un {\lstinline[basicstyle=\ttfamily\color{red}]|anti-pattern|}.
+    \\~\\
+    Il est impossible avec un langage objet d'avoir une absence de couplage, cependant on peut parler de \textbf{couplage l\^{a}che} dans le cas o\`{u} l'impact d'un changement est minimal.    
+\end{frame}
+
+\begin{frame}
+	\frametitle{Couplage fort / couplage l\^{a}che II}
+Il y a deux types principaux de modifications : de structures et de fonctionnalit\'{e}s.
+ \\~\\
+Le couplage l\^{a}che est donc quand un changement li\'{e}e \`{a} une fonctionnalit\'{e} n'entra\^{i}ne pas de modifications ailleurs dans le code.
+ \\~\\
+    Gr\^{a}ce \`{a} des techniques comme le TDD ou C4, on peut concevoir des composants isol\'{e}s fonctionnellement pour lesquels la majorit\'{e} des changements peuvent se faire sans impact sur les autres composants.
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Exemple de couplage}
+
+    La \textit{\textbf{Connascence}} (terme anglophone) est un outil qui permet d'identifier et de cat\'{e}goriser les formes de couplage.
+    \\~\\
+    Il est alors possible de changer une forme par une autre, consid\'{e}r\'{e}e comme plus l\^{a}che.
+    \\~\\
+    \textbf{Couplage de position}:
+    \begin{lstlisting}
+def send_email(address: String, subject: String, body: String)
+	\end{lstlisting}
+    \textbf{Couplage de type}:
+    \begin{lstlisting}
+def send_email(email: Email)
+	\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Inversion de contr\^{o}le I}
+
+    La pratique du TDD permet de concevoir des composants autonomes et r\'{e}-utilisables.
+    \\~\\
+    Les composants peuvent \^{e}tre organis\'{e}s entre eux de l'ext\'{e}rieur, plut\^{o}t que ce soient eux qui cr\'{e}ent les objets dont ils ont besoin.
+    \\~\\
+    C'est ce qu'on appelle l'inversion de contr\^{o}le.
+    \\~\\
+    Il n'est pas n\'{e}cessaire d'employer un framework pour utiliser ce design pattern.
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Inversion de contr\^{o}le II}
+
+    \begin{lstlisting}
+	public static void main(String[] args) {
+		PriceService priceService = new MapBasedPriceService();
+		CartService cartService = new DefaultCartService(priceService);
+		new Launcher(cartService).start();
+	}
+
+	void onClickAdd(Product p) {
+		cartService.addProduct(p);
+	}
+
+	void onClickPaiement() {
+		goToPaiement(cartService.getCardPrice());
+	}
+	\end{lstlisting}
+\end{frame}
+
+\subsection{M V C}
+
+\begin{frame}[fragile]
+	\frametitle{Mod\`{e}le Vue Contr\^{o}leur}
+
+    Le design-pattern \textbf{MVC} sugg\`{e}re de s\'{e}parer un code IHM en 3 sections:
+
+	\begin{itemize}
+		\item \textit{le contr\^{o}leur} : g\`{e}re les r\`{e}gles m\'{e}tiers (validation, formatage, structuration des donn\'{e}es, etc.)
+		\item \textit{la vue} : ce qui visualise l'utilisateur (boutons, formulaire, rendu graphique, etc.)
+		\item \textit{le mod\`{e}le} :  c'est l'image technique des donn\'{e}es que l'utilisateur manipule
+ 	\end{itemize}  
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Mod\`{e}le Vue Contr\^{o}leur : int\'{e}r\^{e}t}
+
+	La vue va d\'{e}l\'{e}guer les actions de l'utilisateur au contr\^{o}leur ; ce qui fait que si une fonctionnalit\'{e} change (fonctionnalit\'{e} de navigation au sein de l'IHM par exemple) on peut changer le code du contr\^{o}leur sans alt\'{e}rer le rendu graphique.
+	\\~\\
+	C'est une forme de \textbf{d\'{e}couplage}.
+	\\~\\
+	On peut dire aussi que la vue est isol\'{e}e et donc les probl\'{e}matiques de multi-threading sont g\'{e}r\'{e}es par le contr\^{o}leur uniquement (typiquement concurrence d'acc\`{e}s).
+\end{frame}
+
+\subsection{Fault barrier vs Pokemon}
+
+\begin{frame}[fragile]
+	\frametitle{Pokemon}
+
+	Le Pokemon est un \textbf{anti-pattern}.
+	\\~\\
+    On entend par \textbf{Pokemon} le fait d'attraper toutes les exceptions d'un coup (attrapez les tous !).
+    \\~\\
+    Il est compliqu\'{e} de conna\^{i}tre les exceptions attrap\'{e}es qui seront cach\'{e}es derri\`{e}re un type g\'{e}n\'{e}rique (Throwable, Exception, Runtime Exception) : cela emp\^{e}che de g\'{e}rer les exceptions m\'{e}tier correctement, voir va alt\'{e}rer le comportement de la JVM.
+    \\~\\
+    La pire forme de cet anti-pattern est le Catch $\longrightarrow$ Log $\longrightarrow$ Throw qui n'apporte rien et qui pollue les logs en ajoutant inutilement des erreurs voire des stacktraces.
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Fault barrier I}
+Le design-pattern \textbf{Fault barrier} est un pokemon (m\^{e}me structure de code qu'un pokemon) mais bien plac\'{e} dans le code (dans un endroit strat\'{e}gique qui emp\^{e}chera de casser en cas d'erreur non-connue). Par d\'{e}finition, son usage est unique au sein d'un thread.
+\\~\\
+Ce pattern s'applique principalement aux threads qui contiennent des boucles.
+\\~\\
+Il est \`{a} placer \textbf{au plus haut niveau} du fil d'ex\'{e}cution du programme.
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Fault barrier II}
+
+	\begin{lstlisting}
+var mustStop = false
+
+def run = {
+	val serverSocket: ServerSocket = new ServerSocket(port)
+	try {
+		while (!mustStop) {
+        	try {
+        		val socket = serverSocket.accept
+        		pool.submit(new SocketHandler(socket))
+        	} catch {
+        		case e: Exception => logger.error(s"Unknown error: ${e.getMessage}", e)
+        	}
+		}
+	}
+}
+	\end{lstlisting}
+\end{frame}
+
+\subsection{Proxy}
+
+\begin{frame}[fragile]
+	\frametitle{Proxy I}
+Le design-pattern \textbf{Proxy} permet de rajouter du comportement sur un objet sans alt\'{e}rer son impl\'{e}mentation d'origine.
+\\~\\
+Pour cela le proxy a exactement la m\^{e}me signature que l'objet auquel il se substitue ; il a les m\^{e}mes m\'{e}thodes publiques.
+\\~\\
+Le proxy fonctionne de la mani\`{e}re suivante :
+
+		\begin{itemize}
+			\item potentiellement \textit{ajouter un comportement avant} l'appel \`{a} la m\'{e}thode, 
+			\item faire \textit{transiter l'appel} \`{a} la m\'{e}thode directement \`{a} l'objet tel un passe-plat, 
+			\item potentiellement \textit{ajouter un comportement apr\`{e}s} l'invocation.
+		\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Proxy II}
+Des exemples de comportements ajout\'{e}s classiquement avec un proxy: rajouter une log, gestion du r\'{e}-essai, etc.
+\\~\\
+L'id\'{e}e est de s\'{e}parer les responsabilit\'{e}s : la logique de r\'{e}-essai (li\'{e}e au r\'{e}seau et r\'{e}-applicable) est ind\'{e}pendante de la logique m\'{e}tier (adaptation des donn\'{e}es).
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Dynamic Proxy I}
+Afin de ne pas avoir \`{a} adapter une m\'{e}canique \`{a} un objet sp\'{e}cifique, il est possible d'utiliser un \textbf{Proxy Dynamique}. 
+\\~\\
+Celui-ci va permettre d'ajouter un comportement \`{a} un objet, sans adh\'{e}rence entre les deux. Le Proxy Dynamique n'a pas besoin de conna\^{i}tre l'objet ; en effet la signature sera copi\'{e}e dynamiquement.
+\\~\\
+Il est possible par exemple de cr\'{e}er des proxy qui peuvent loguer le temps d'ex\'{e}cution des m\'{e}thodes sans forc\'{e}ment conna\^{i}tre \`{a} l'avance les objets sur lesquels ils vont \^{e}tre utilis\'{e}s.
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Dynamic Proxy : exemple de code}
+
+	\begin{lstlisting}
+public static <T> T create(T object, Class<T> objectInterface) {
+	String interfaceName = objectInterface.getSimpleName();
+	InvocationHandler invocationHandler = (proxy, method, args) -> {
+		long startTime = System.currentTimeMillis();
+		try {
+			return method.invoke(object, args);
+		} finally {
+			long endTime = System.currentTimeMillis();
+			LOGGER.debug(interfaceName + "#" + method.getName() + " took " + (endTime - startTime) + " ms");
+		}
+	};
+	return (T) Proxy.newProxyInstance(TimeLoggerProxy.class.getClassLoader(), new Class<?>[] {objectInterface }, invocationHandler);
+}
+	\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Dynamic Proxy : exemple d'utilisation}
+
+\begin{lstlisting}
+PriceService priceService = new MapPriceService();
+PriceService timedPriceService = timeLoggerProxy(priceService, PriceService.class);
+CartService cartService = new DefaultCartService(timedPriceService);
+CartService timedCartService = timeLoggerProxy(cartService, CartService.class);
+new Launcher(timedCartService).start();
+    \end{lstlisting}
+\end{frame}
+
+\subsection{Chain of responsibility vs if..if..if}
+
+\begin{frame}[fragile]
+	\frametitle{Chaine de responsabilit\'{e}s I}
+Pour g\'{e}rer les cas m\'{e}tier, il est classique d'encha\^{i}ner les if, else if, else if g\'{e}rant tous les sous-cas. 
+\\~\\
+Le probl\`{e}me de cette impl\'{e}mentation est qu'il peut devenir difficile d'identifier la totalit\'{e} des conditions n\'{e}cessaires ou suffisantes pour d\'{e}clencher un cas m\'{e}tier pr\'{e}cis.
+\\~\\
+Le design-pattern \textbf{Chaine de responsabilit\'{e}s} offre une structure propice pour r\'{e}pondre \`{a} ce genre de besoins en gardant claire la liaison entre le cas m\'{e}tier et sa condition de d\'{e}clenchement.
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Chaine de responsabilit\'{e}s II}
+La cha\^{i}ne est compos\'{e}e de \textbf{maillons} (objets), chaque maillon est compos\'{e} du cas m\'{e}tier et de la condition qui le d\'{e}clenche.
+\\
+L'impl\'{e}mentation permet d'identifier simplement les conditions de d\'{e}clenchement : il n'y a qu'un seul if.
+\\~\\
+On peut donc m\'{e}langer des cas m\'{e}tier \`{a} de la validation ou de l'enrichissement de donn\'{e}es.
+\\
+Chaque maillon de la cha\^{i}ne sera responsable d'appeler ou non le maillon suivant.
+\\~\\
+La cha\^{i}ne de responsabilit\'{e} est classiquement utilis\'{e}e dans les serveurs HTTP pour g\'{e}rer successivement l'encodage, la compression, la s\'{e}curit\'{e}, etc.
+\end{frame}
+
+\subsection{DDD vs Mod\`{e}le an\'{e}mique}
+\begin{frame}[fragile]
+	\frametitle{Domain Design Development}
+Le \textbf{DDD} est une pratique qui tend \`{a} refl\'{e}ter directement dans le code les probl\'{e}matiques m\'{e}tier sans passer par une forme d'abstraction technique.
+\\~\\
+Le vocabulaire doit \^{e}tre commun afin qu'il puisse y avoir un partage naturel entre d\'{e}veloppeurs et autres acteurs impliqu\'{e}s du projet.
+\\~\\
+Quelques int\'{e}r\^{e}ts : \'{e}viter les incompr\'{e}hensions et identifier imm\'{e}diatement dans le code une fonctionnalit\'{e} m\'{e}tier.
+\\~\\
+Concr\`{e}tement il s'agit de travailler avec le m\'{e}tier afin d'isoler en \^{i}lots les domaines fonctionnels : ils seront naturellement isol\'{e}s dans le code.
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Mod\`{e}le an\'{e}mique}
+Le DDD est adapt\'{e} aux langages objet, par cons\'{e}quent les objets qui repr\'{e}sentent le m\'{e}tier doivent non seulement \^{e}tre constitu\'{e}s de donn\'{e}es du domaine fonctionnel mais \'{e}galement des comportements.
+\\~\\
+Il arrive r\'{e}guli\`{e}rement de former des structures de donn\'{e}es sans comportements, typiquement un objet persist\'{e} en base constitu\'{e} uniquement de getter/setter.
+\\~\\
+C'est ce qu'on appelle un \textbf{mod\`{e}le an\'{e}mique}, c'est un anti-pattern.
+\\~\\
+Si une classe ne poss\`{e}de pas de contenu dans ses m\'{e}thodes, ce n'est plus un objet mais une struct, dans ce cas l\`{a}, les m\'{e}thodes sont inutiles et doivent \^{e}tre supprim\'{e}es.
+\end{frame}
+
+\subsection{Reactor, Event loop (Swing, Android, Vert.X, node.js, etc.)}
+
+\begin{frame}[fragile]
+	\frametitle{Reactor}
+Le design-pattern \textbf{Reactor} consiste en un fil d'ex\'{e}cutions unique qui va servir toutes les requ\^{e}tes. C'est un pattern largement utilis\'{e} (js dans les navigateurs, node.js, Swing, vert.x, Android thread UI, etc.)
+\\~\\
+Ce fil d'ex\'{e}cutions \'{e}tant unique, s'il se retrouve bloqu\'{e}, les requ\^{e}tes d'apr\`{e}s ne peuvent plus \^{e}tre trait\'{e}es : 
+\begin{itemize}
+\item dans un serveur HTTP synchrone : si le thread est bloqu\'{e}, plus aucune requete ne peut \^{e}tre faite vers le serveur
+\item dans le cas d'une application Swing ou Android : si l'EDT ou le thread UI sont bloqu\'{e}s, l'application peut ramer ou pr\'{e}senter des artefacts visuels.
+\end{itemize}
+Dans le cadre du Reactor il faut utiliser d'autres threads afin de d\'{e}l\'{e}guer les taches prenant du temps et ne pas bloquer le thread principal.
+\end{frame}
+
+\section{Conclusion}
+\begin{frame}[fragile]
+	\frametitle{Conclusion}
+Il existe beaucoup d'autres pattern (EIP, GRASP, etc.), il est int\'{e}ressant, lorsqu'un code devient complexe, de se pencher sur les desing-pattern existants.
+\\~\\
+Les \textit{codes smells} r\'{e}pertorient les mauvaises pratiques de code, pouvant \^{e}tre am\'{e}lior\'{e}es, par exemple par l'utilisation de design-pattern.
+\\~\\
+En conclusion, si certains principes sont depuis longtemps consid\'{e}r\'{e}s comme des standards, de nouvelles probl\'{e}matiques et de nouvelles solutions apparaissent tous les jours. 
+\\~\\
+La veille technologique \textbf{active} est par cons\'{e}quent indispensable afin d'imaginer des solutions aux probl\`{e}mes de demain.
+\end{frame}

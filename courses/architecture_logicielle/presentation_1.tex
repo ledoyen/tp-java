@@ -1,0 +1,155 @@
+\documentclass{beamer}
+
+\mode<presentation> {
+	\usetheme{Darmstadt}
+}
+
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{textcomp}
+\usepackage{eurosym}
+\usepackage{listings}
+\usepackage{lstautogobble}
+\usepackage{color}
+\usepackage{ragged2e}
+\usepackage{etoolbox}
+
+\apptocmd{\frame}{}{\justifying}{} % Allow optional arguments after frame.
+
+\setbeamertemplate{itemize item}[circle]
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstset{frame=none,
+  language=Java,
+  aboveskip=0mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle=\small,
+  numbers=left,
+  numbersep=5pt,
+  backgroundcolor=\color{backcolour},
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3,
+  autogobble=true
+}
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\title[Architecture Logicielle]{Architecture Logicielle}
+
+\author{Lo\"{\i}c Ledoyen}
+\institute[LEDOYEN EI] {
+    \medskip
+    \textit{ledoyen.esiea@gmail.com}
+}
+\date{\today}
+
+\begin{document}
+
+\begin{frame}
+	\titlepage
+\end{frame}
+
+\begin{frame}
+	\frametitle{Pourquoi l'architecture logicielle ?}
+    
+    \begin{itemize}
+        \item maintenabilit\'{e} / \'{e}volutivit\'{e}
+        \item testablit\'{e}
+        \item fiabilit\'{e}
+        \item scalabilit\'{e}
+        \item s\'{e}curit\'{e}
+        \item performance
+    \end{itemize}
+	~\\
+    L{'}ordre de priorit\'{e} de ces objectifs doit \^{e}tre d\'{e}cid\'{e} par l{'}ensemble des acteurs du projet et r\'{e}ajust\'{e} autant que n\'{e}cessaire.
+    \\~\\
+    Il s{'}agit d{'}un \underline{\textbf{partenariat}}.
+    \\~\\
+    Le d\'{e}veloppeur met en \oe{}uvre les \textbf{principes d'architecture logicielle} pour r\'{e}pondre au mieux au \underline{\textbf{besoin}} du client.
+\end{frame}
+
+\begin{frame}
+	\frametitle{Objectifs du cours}
+    Conna\^{i}tre
+	\begin{itemize}
+        \item les bases de la programmation orient\'{e}e objet
+        \item les outils de l'\'{e}cosyst\`{e}me du langage
+        \item quelques patrons de conception
+        \item quelques principes d'architecture \& m\'{e}thodologies de design
+    \end{itemize}
+    ~\\
+    \begin{itemize}
+    	\item Penser en terme de besoin pour arriver \`{a} la meilleur solution
+        \item Bref, \^{e}tre un d\'{e}veloppeur
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Aller plus loin}
+
+	YouTube - Devoxx FR
+    \\~\\
+	\url{http://www.codingthearchitecture.com/}
+    \\~\\
+	\url{http://martinfowler.com/}
+    \\~\\
+    \url{http://thinkbeforecoding.com/}
+    
+\end{frame}
+
+\begin{frame}
+	\frametitle{Contenu I}
+	\tableofcontents[sections={1-2}]
+\end{frame}
+
+\begin{frame}
+	\frametitle{Contenu II}
+	\tableofcontents[sections={3-4}]
+\end{frame}
+
+\begin{frame}
+	\frametitle{Contenu III}
+	\tableofcontents[sections={5-6}]
+\end{frame}
+
+%----------------------------------------------------------------------------------------
+%	INTRO
+%----------------------------------------------------------------------------------------
+
+
+\begin{frame}
+	\frametitle{Introduction}
+
+	Chacun son processus de cr\'{e}ation
+    \\~\\
+	\includegraphics[width=7cm]{img/pottery.jpg}
+    \\~\\
+	Good programming is 99\% sweat and 1\% coffee.
+\end{frame}
+
+\input{parts/1_poo.tex}
+
+\input{parts/2_dev_ecosyst.tex}
+
+\input{parts/3_team_ecosyst.tex}
+
+\input{parts/4_project_boostrap.tex}
+
+\input{parts/5_team_play.tex}
+
+\end{document} 
+

@@ -1,0 +1,191 @@
+\section{\'{E}cosyst\`{e}me de l'\'{e}quipe de d\'{e}veloppement}
+
+\begin{frame}
+    \begin{center}
+    \fontsize{48pt}{7.2}\selectfont
+    \'{E}cosyst\`{e}me de l'\'{e}quipe de d\'{e}veloppement
+    \end{center}
+\end{frame}
+
+\subsection{Tests}
+\begin{frame}
+	\frametitle{Tests... again}
+    Comme on l'a vu, les tests servent \`{a} \textbf{rassurer l\'{}\'{e}quipe projet}.
+    \\~\\
+    Cela signifie que les membres de l\'{}\'{e}quipe vont chercher dans les tests accompagnant un d\'{e}veloppement :
+    \begin{itemize}
+        \item une mise \`{a} plat du besoin
+        \item une documentation du code
+        \item une s\'{e}curit\'{e} pour de futurs changements (refactoring)
+        \item une assurance que la section test\'{e}e fonctionnera en \textbf{\textit{Production}}
+    \end{itemize}
+	~\\
+	Il faudra donc \^{e}tre vigilant \`{a} deux points cl\'{e}s:
+    \begin{itemize}
+        \item la couverture de code
+        \item les assertions
+    \end{itemize}
+\end{frame}
+
+\subsection{Relecture de code}
+\begin{frame}
+	\frametitle{Relecture de code I}
+    La relecture, ou revue de code est l'action de faire valider son code par un autre membre de l\'{}\'{e}quipe.
+    \\~\\
+    La revue s'attarde \`{a} travailler sur un morceau de code \textbf{\textit{restreint}} correspondant \`{a} une \'{e}volution ou une correction.
+    \\~\\
+    Elle peut \^{e}tre formelle (obligatoire) au travers d'outils tels que Gerrit, ou informelle en travaillant \`{a} 2 ou plus sur un m\^{e}me clavier (pair-programming).
+    \\~\\
+    La revue de code est un des outils de l\'{}\'{e}quipe pour faire fasse \`{a} plusieurs probl\'{e}matiques :
+    \begin{itemize}
+        \item le passage de connaissance
+        \item la d\'{e}tection de bug
+        \item le respect de la \textbf{\textit{vision technologique}} du projet
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Relecture de code II}
+    Afin de rendre le travail plus simple et d'y passer le moins de temps possible, il est pr\'{e}f\'{e}rable de proposer \`{a} l\'{}\'{e}quipe des morceaux de code (branche, PR ou juste commit) les plus petits possibles.
+    \\~\\
+    La revue de code est un outil tr\`{e}s puissant, mais il est facile d'y perdre beaucoup de temps.
+    \\~\\
+    Il existe quelques r\`{e}gles simples mais c'est \`{a} chaque \'{e}quipe de trouver sa mani\`{e}re de proc\'{e}der :
+    \begin{itemize}
+        \item le code est la responsabilit\'{e} de l\'{}\'{e}quipe, \'{e}viter de le personnifier (\textbf{le} code plut\^{o}t que \textbf{ton}/\textbf{son} code)
+        \item couper court aux d\'{e}bats d'opinions, s'il y a d\'{e}bat, les arguments doivent \^{e}tre objectifs
+        \item privil\'{e}gier la parole \`{a} l\'{}\'{e}change formel (chat, mail, etc.)
+    \end{itemize}
+\end{frame}
+
+\subsection{Pourquoi les patrons de conception ?}
+\begin{frame}
+	\frametitle{Design Patterns I}
+    Les patrons de conceptions \underline{proposent} des solutions adapt\'{e}es \`{a} des besoins \textit{standards}.
+    \\~\\
+    Il est int\'{e}ressant d'en comprendre quelques-uns afin de confronter les solutions qu'ils proposent \`{a} une approche na\"{i}ve.
+    \\~\\
+    Il n'est cependant pas recommand\'{e} de commencer \`{a} coder en s'appuyant directement sur des \textit{designs patterns}.
+    \\~\\
+    On parle dans ce cas d\'{}\'{e}mergence plut\^{o}t que de \textit{Big Design Up Front}.
+    \\~\\
+    Pour cela il est important de se focaliser sur le m\'{e}tier de l'application, \textbf{puis} d'identifier les sections qui sont susceptibles d'\^{e}tre impl\'{e}ment\'{e}es gr\^{a}ce \`{a} des design patterns.
+\end{frame}
+
+\begin{frame}
+	\frametitle{Design Patterns II}
+    Les \textit{patrons de conceptions} sont un outil de l\'{}\'{e}quipe permettant de \underline{converger} vers une solution standard.
+    \\~\\
+    Attention toutefois \`{a} ce que la solution soit adapt\'{e}e au besoin.
+\end{frame}
+
+\subsection{Int\'{e}gration continue}
+\begin{frame}
+	\frametitle{Int\'{e}gration continue}
+    L'int\'{e}gration continue consiste \`{a} lancer r\'{e}guli\`{e}rement, voir \`{a} chaque changement de la base de code, certaines taches du cycle de vie du projet, notamment:
+    \begin{itemize}
+        \item la compilation
+        \item les tests (unitaires et d'int\'{e}gration)
+        \item la cr\'{e}ation de binaires \textit{snapshot}
+        \item l'analyse de la qualit\'{e} du code
+        \item la g\'{e}n\'{e}ration de la documentation
+    \end{itemize}
+    ~\\
+    Cela permet \`{a} l\'{}\'{e}quipe d'avoir un retour rapide sur l'avancement du projet ainsi qu'une centralisation des taches r\'{e}p\'{e}titives comme le d\'{e}ploiement sur divers environnements ou encore le lancement des tests d'acceptation.
+\end{frame}
+
+\subsection{Mesure de la qualit\'{e} du code}
+\begin{frame}
+	\frametitle{Qualit\'{e} du code}
+    Il existe de nombreux outils d'analyse de la qualit\'{e} du code.
+    Cela comprend
+    \begin{itemize}
+        \item l'analyse statique qui s'attache \`{a} v\'{e}rifier le code source. Dans l'\'{e}cosyst\`{e}me Java il en existe plusieurs : checkstyle, findbugs, PMD, etc.
+        \item l'analyse dynamique qui v\'{e}rifie le comportement au moment de l'ex\'{e}cution. C'est ce type d'analyse qui permet de conna\^{i}tre la portion de code couverte par les diff\'{e}rents types de tests (JaCoCo, etc.)
+    \end{itemize}
+    ~\\
+    Ces analyses peuvent \^{e}tre regroup\'{e}s dans un outil central, aliment\'{e} via l'int\'{e}gration continue.
+    \\~\\
+    Ainsi l'\'{e}quipe peut d\'{e}finir les r\`{e}gles/conventions qu'elle souhaite suivre et v\'{e}rifier leur respect tout au long de la vie du projet.
+\end{frame}
+
+\begin{frame}
+	\frametitle{CI \& Quality}
+    \begin{center}
+    \fontsize{48pt}{7.2}\selectfont
+    D\'{e}mo
+    \end{center}
+    \begin{center}
+    (Jenkins \& Sonar)
+    \end{center}
+\end{frame}
+
+\subsection{Supervision}
+\begin{frame}
+	\frametitle{Supervision I}
+La supervision est un outil important de l'\'{e}quipe qui permet de
+	\begin{itemize}
+        \item comprendre le comportement d'une application en condition r\'{e}elle
+        \item \^{e}tre alert\'{e} lorsqu'un probl\`{e}me appara\^{i}t
+    \end{itemize}
+
+    ~\\
+    La supervision peut \^{e}tre con\c{c}ue en r\'{e}pondant \`{a} 3 questions :
+    \begin{itemize}
+    	\item Quels sont les comportements du syst\`{e}mes que l'on souhaite identifier comme probl\'{e}matiques (service indisponible, utilisation anormale, etc.) ?
+        \item Quels comportements du syst\`{e}mes souhaite-t-on comprendre (coups de b\'{e}liers, interruption de services externes, etc.) ?
+        \item O\`{u} placer les sondes qui remonterons les informations n\'{e}cessaires ?
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Supervision II}
+    On peut utiliser, entre autres, les stacks suivantes:
+    \\~\\
+    Logstash $\longrightarrow$ ElasticSearch $\longrightarrow$ Kibana / ElastAlert
+    \begin{itemize}
+      \item[] + centralisation et analyse des logs
+      \item[] + (plugin timelion pour les s\'{e}ries temporelles)
+      \item[] - peu adapt\'{e} aux s\'{e}ries temporelles
+      \item[] - alertes non int\'{e}gr\'{e}es aux dashboards
+    \end{itemize}
+    ~\\
+    collectd / sql-to-graphite $\longrightarrow$ Graphite $\longrightarrow$ Grafana
+	\begin{itemize}
+      \item[] + La taille de la BDD (carbon) est d\'{e}finie \`{a} l'avance
+      \item[] + adapt\'{e} aux s\'{e}ries temporelles
+      \item[] - uniquement aux s\'{e}ries temporelles
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Supervision III}
+Dans l'\'{e}cosyst\`{e}me Java, les m\'{e}triques peuvent \^{e}tre produites en utilisant l'API JMX (Java Management Extensions).
+    \\~\\
+    Cette API permet (entre autre) d'exposer des m\'{e}triques num\'{e}riques, notamment gr\^{a}ce \`{a} des librairies comme \textit{metrics} de Dropwizard.
+    \\~\\
+        \begin{lstlisting}
+	@RequestMapping("/create_user")
+	Customer createUser(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) {
+		final Timer.Context context = timer.time(); // starts the timer
+		try {
+			Customer newCustomer = repository.create(firstName, lastName)
+			LOGGER.info("Saved new " + newCustomer);
+			return newCustomer;
+		} finally {
+			context.stop(); // stops and compute results
+		}
+	}
+	\end{lstlisting}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Supervision}
+    \begin{center}
+    \fontsize{48pt}{7.2}\selectfont
+    D\'{e}mo
+    \end{center}
+    \begin{center}
+    (Serveur REST \& JConsole)
+    \end{center}
+\end{frame}
