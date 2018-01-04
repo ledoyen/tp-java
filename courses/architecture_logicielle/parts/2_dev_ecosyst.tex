@@ -38,7 +38,7 @@
       \item {\lstinline[basicstyle=\ttfamily\color{blue}]|git init|} initialise un d\'ep\^{o}t Git local
       \item {\lstinline[basicstyle=\ttfamily\color{blue}]|git clone <url>|} clone un d\'ep\^{o}t distant
 	  \item (sous Windows) {\lstinline[basicstyle=\ttfamily\color{blue}]|git config core.fileMode false|} fait ignorer \`a git les changements de droits d'execution
-	  \item (sous Windows) {\lstinline[basicstyle=\ttfamily\color{blue}]|git update-index --chmod=+x <file>|} positione le bit d'execution sur le fichier $<$file$>$
+	  \item (sous Windows) {\lstinline[basicstyle=\ttfamily\color{blue}]|git update-index --chmod=+x <file>|} positionne le bit d'execution sur le fichier $<$file$>$
     \end{itemize}
 	Pour se mettre \`a jour :
 	\begin{itemize}
@@ -67,7 +67,7 @@
 	Pour observer les changements :
     \begin{itemize}
 	  \item {\lstinline[basicstyle=\ttfamily\color{blue}]|git status|} affiche les diff\'erences entre les d\'epots local et distant
-      \item {\lstinline[basicstyle=\ttfamily\color{blue}]|git log --oneline -n 15|} affiche les 15 derniers commits de la branch courante avec leur hash r\'eduit
+      \item {\lstinline[basicstyle=\ttfamily\color{blue}]|git log --oneline -n 15|} affiche les 15 derniers commits de la branche courante avec leur hash r\'eduit
 	  \item {\lstinline[basicstyle=\ttfamily\color{blue}]|git diff --stat|} affiche un r\'esum\'e des changements
       \item {\lstinline[basicstyle=\ttfamily\color{blue}]|git diff --word-diff=color <file>|} affiche les changements effectu\'es sur le fichier $<$file$>$
     \end{itemize}
@@ -90,6 +90,13 @@
 	~\\~\\
 
 	Source : \url{https://git-scm.com/docs}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Git: Rebase}
+	~\\
+	\includegraphics[width=11cm]{img/git_rebase.png}
+    ~\\
 \end{frame}
 
 \subsection{Moteur de construction}

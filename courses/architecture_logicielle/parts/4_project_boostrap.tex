@@ -141,6 +141,54 @@ public int absoluteSum(Collection<Integer> numbers) {
     \centerline{\includegraphics[width=8cm]{img/class_diagram.jpg}}
 \end{frame}
 
+\subsection{Architecture Hexagonale}
+\begin{frame}
+	\frametitle{Architecture Hexagonale I}
+
+    Il s'agit d'un type d'architecture o\`u le code m\'etier est s\'epar\'e des sp\'ecifit\'es techniques.\\
+	~\\
+	Cette approche rejoint le DDD (Domain Design Development) en ce sens que l'effort est concentr\'e dans un premier temps sur la mod\'elisation du domaine avec le vocabulaire de l'entreprise.\\
+	~\\
+	Ainsi isol\'e des probl\'ematiques techniques, le code m\'etier est simple \`a lire, \`a tester, \`a faire \'evoluer.\\
+	~\\
+	Dans un second temps des adapteurs sont d\'evelopp\'es pour connecter le code m\'etier avec le monde ext\'erieur (web-service, base de donn\'ees, etc.)\\
+	~\\
+	\textbf{\color{red}{Le code m\'etier ne doit avoir aucune d\'ependance sur les adapteurs.}}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Architecture Hexagonale II}
+
+    \centerline{\includegraphics[width=10cm]{img/hexagonal-architecture.jpg}}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Architecture Hexagonale III}
+
+    On parle de
+	\begin{itemize}
+    	\item \textbf{\color{blue}{API}} : le code m\'etier qui est appel\'e par des adapteurs
+        \item \textbf{\color{blue}{SPI}} : le code m\'etier qui appelle des adapteurs
+    \end{itemize}
+	
+	\textbf{\color{blue}{API}} et \textbf{\color{blue}{SPI}} sont une s\'erie d'interface qui permettent le d\'ecouplage entre les diff\'erentes parties du code.\\
+	\includegraphics[width=6cm]{img/api_vs_spi1.png}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Architecture Hexagonale IV}
+
+    Ce \textit{pattern d'architecture} permet \`a faible cout de :
+	\begin{itemize}
+    	\item faciliter le test des r\`egles m\'etier
+        \item simplifier le remplacement d'un adapteur par un autre (changement de protocol par ex.)
+		\item am\'eliorer la lisibilit\'e du code
+    \end{itemize}
+	
+	~\\
+	En outre le code m\'etier \'etant fid\`ele au domaine, c'est une bonne base pour la documentation vivante (Living Documentation).
+\end{frame}
+
 \subsection{D\'{e}veloppement pilot\'{e} par les tests (TDD, BDD)}
 \begin{frame}
 	\frametitle{TDD}
