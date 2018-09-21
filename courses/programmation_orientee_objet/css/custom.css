@@ -1,0 +1,9 @@
+.share a {
+    color: #42affa;
+    text-decoration: none;
+    font-size: 32px;
+}
+
+.share a:not(:first-child) {
+    margin-left: 60px;
+}

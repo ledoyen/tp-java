@@ -1,0 +1,57 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="css/reveal.css">
+        <link rel="stylesheet" href="css/custom.css">
+        <link rel="stylesheet" href="css/theme/black.css">
+        <link rel="stylesheet" href="lib/css/fontawesome-all.min.css">
+    </head>
+    <body>
+        <div class="reveal">
+            <div class="slides">
+                <section data-markdown="content/title.md"></section>
+                <section>Slide 2</section>
+            </div>
+        </div>
+
+        <script src="js/reveal.js"></script>
+        <script src="lib/js/head.min.js"></script>
+        <script>
+            Reveal.initialize({
+                slideNumber: true,
+                history: true,
+                mouseWheel: true,
+                dependencies: [
+                    // Cross-browser shim that fully implements classList - https://github.com/eligrey/classList.js/
+                    { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+
+                    // Interpret Markdown in <section> elements
+                    { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                    { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+
+                    // Syntax highlight for <code> elements
+                    { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+
+                    // Zoom in and out with Alt+click
+                    { src: 'plugin/zoom-js/zoom.js', async: true },
+
+                    // Speaker notes
+                    { src: 'plugin/notes/notes.js', async: true },
+
+                    // MathJax
+                    { src: 'plugin/math/math.js', async: true }
+                ]
+            });
+        </script>
+        <div class="share" style="display: block; position: absolute; bottom: 16px; left: 35%; margin-left: -139px; z-index: 20;">
+            <a href="mailto:ledoyen.loic@gmail.com">ledoyen.loic@gmail.com</a>
+            <a class="share-twitter" href="https://twitter.com/ledoyen_loic">
+                <i class="fab fa-twitter-square"></i>
+                @ledoyen_loic
+            </a>
+            <a class="share-twitter" href="https://github.com/ledoyen">
+                <i class="fab fa-github"></i>
+                /ledoyen
+            </a>
+        </div>
+    </body>
+</html>
