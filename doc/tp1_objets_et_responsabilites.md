@@ -22,14 +22,42 @@ Ce journal, qu'il soit dans la console ou dans un fichier permet de comprendre c
 * informatifs (ex: tel utilisateur a fait telle opération)
 * de "debug" (ex: la requête au serveur distant a prit 39ms)
 
-Pour commencer, créer un package spécifique : `org.tp.logger`
+Pour commencer, créer un package spécifique : `org.tp.logger`.
+> Un package est une succession de répertoires depuis le répertoire "racine" des sources (conventionellement **src**).
+> Ici :
+```
+.
++-- tp2/
+|  +-- src/
+|  |   +-- org/
+|  |       +-- tp/
+|  |           +-- logger/
+|  |               +-- (*.java)
+|  +-- bin/
+```
+
+> Tous les fichiers Java dans un package donné comportent comme première ligne la déclaration du package dans lequel ils sont :
+```java
+package org.tp.logger;
+
+// Suite du fichier (class, enum ou interface)
+```
+
 Dans ce package, créer une interface `Logger` avec une seule méthode abstraite :
 ```java
 void log(String message);
 ```
 Créer ensuite une classe `ConsoleLogger` implémentant `Logger` et affichant le `message` passé en paramètre dans la console en utilisant `System.out`.
 
-Créer enfin une classe `LoggerFactory` ayant une méthode statique `getLogger(String name)` retournant une instance de `Logger`.
+> Implémenter une interface revient à la déclarer dans la classe. Pour un objet `Dog` implémentant l'interface `Pet` :
+```java
+public class Dog implements Pet {
+    // contenu de la classe (attributs, méthodes)
+}
+```
+
+Créer enfin une classe `LoggerFactory` ayant une méthode publique et statique `getLogger(String name)` retournant un objet de type `Logger` (c'est-à-dire implémentant l'interface `Logger`).
+Dans un premier temps, le paramètre `name` ne servira à rien.
 
 ## EX 2: Modélisation d'un jeu : l'age du capitaine
 Le jeu ici sera de deviner un nombre que l'ordinateur aura choisi.
@@ -40,9 +68,12 @@ Cette dernière aura les méthodes suivantes
 ```java
 long askNextGuess();
 
+/**
+ * Called by {@link Simulation} to inform that the previous guess was lower or greater that the number to find.
+ */
 void respond(boolean lowerOrGreater);
 ```
-Créer une première implémentation qui utilisera votre interaction `HumanPlayer`.
+Créer une première implémentation qui permettra l'interfaçage avec un utilisateur humain (IHM, pour Interface Homme Machine) `HumanPlayer`.
 Cette classe utilisera
 * d'une part une instance de `Logger` donnée par `LoggerFactory` avec l'argument `"player"`
 * d'autre part la classe `java.util.Scanner` de Java permettant de récupérer les entrées de l’utilisateur dans la console
@@ -92,7 +123,8 @@ Créer enfin une classe `Launcher` avec une méthode statique `main` qui
 * initialisera cette instance avec un nombre aléatoire, généré par la classe `java.security.SecureRandom`
 ```java
 SecureRandom random = new SecureRandom();
-long randomNumber = random.nextLong();
+// long randomNumber = random.nextLong(); // génère un nombre entre Long.MIN_VALUE et Long.MAX_VALUE
+long random Number = random.nextInt(100); // génère un nombre entre 0 (inclus) et 100 (exclus)
 ```
 * lancera une partie en appelant la méthode `loopUntilPlayerSucceed`
 
