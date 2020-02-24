@@ -154,13 +154,91 @@ Petit rappel sur le TDD :
 > - Améliorer le code de production sans toucher le test si nécessaire  
 > - Recommencer
 
-Pettit rappel sur la structure d'un test :
+Petit rappel sur la structure d'un test :
 > - zero ou plusieurs élèments de mise en **condition initiale**  
 > - un unique élèment déclencheur  
 > - une ou plusieurs vérifications sur l'état résultant attendu
 
 
 Créer le programme de navigation du robot Mars Rover.
+
+### API programmatique
+
+Ajouter l'interface suivante, dans le package : com.esiea.tp4A.domain
+```java
+public interface MarsRover {
+
+    default MarsRover initialize(Position position) {
+        return this;
+    }
+
+    default MarsRover updateMap(PlanetMap map) {
+        return this;
+    }
+
+    default MarsRover configureLaserRange(int range) {
+        return this;
+    }
+
+    default Position move(String command) {
+        return Position.of(0, 0, Direction.NORTH);
+    }
+}
+```
+Avec les contrats suivants :
+```java
+public interface Position {
+    
+    int getX();
+    int getY();
+    Direction getDirection();
+    
+    static Position of(int x, int y, Direction direction) {
+        return new FixedPosition(x, y, direction);
+    }
+    
+    final class FixedPosition implements Position {
+
+        private final int x;
+        private final int y;
+        private final Direction direction;
+
+        public FixedPosition(int x, int y, Direction direction) {
+            this.x = x;
+            this.y = y;
+            this.direction = direction;
+        }
+
+        @Override
+        public int getX() {
+            return x;
+        }
+
+        @Override
+        public int getY() {
+            return y;
+        }
+        
+        @Override
+        public Direction getDirection() {
+            return direction;
+        }
+    }
+}
+```
+```java
+public interface PlanetMap {
+    
+    Set<Position> obstaclePositions();
+}
+```
+```java
+public enum Direction {
+    
+    NORTH, EAST, SOUTH, WEST;
+}
+```
+
 
 #### Implémenter le déplacement
 
