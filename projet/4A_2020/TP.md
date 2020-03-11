@@ -261,7 +261,10 @@ Considérant que la planète Mars fait 100x100, un rover à la position `(0, 50,
 #### Implémenter la détection d'obstacle
 
 Le rover doit être capable de recevoir une carte de la planète, contenant un ensemble de points (x, y) correspondant à des obstacles infranchissables.  
-Dans le cas où le rover reçoit une commande lui demandant de franchir un obstacle, l'ensemble de la commande est simplement ignorée.
+Dans le cas où le rover reçoit une commande lui demandant de franchir un obstacle, les déplacements impossibles ignorés.
+
+**Par exemple**
+> avec un rover à la position initiale de `(0, 0, N)` et un obstacle en (0, 1) si le rover reçoit la commande [f, f, l, b], sa nouvelle position est `(1, 0, W)`.
 
 #### Implémenter le laser
 
