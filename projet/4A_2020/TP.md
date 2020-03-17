@@ -82,16 +82,16 @@ indent_size = 4
 
     <profiles>
         <profile>
-		    <id>jitpack</id>
-		    <repositories>
-		        <repository>
+            <id>jitpack</id>
+            <repositories>
+                <repository>
                     <id>jitpack</id>
                     <url>https://jitpack.io</url>
                 </repository>
-		    </repositories>
-		</profile>
-	</profiles>
-	<activeProfiles>
+            </repositories>
+        </profile>
+    </profiles>
+    <activeProfiles>
         <activeProfile>jitpack</activeProfile>
     </activeProfiles>
 </settings>
@@ -273,6 +273,11 @@ Le rover est équipé d'un laser lui permettant de détruire n'importe quel obst
 Ce laser lui permet entre autre de détruire les obstacles présents sur la carte, et ainsi de pouvoir passer là où ce n'était pas possible avant. 
 Ce laser fonctionne par tirs, un tir s'arrête lorsqu'il détruit un obstacle.
 
+Le rover doit pouvoir prendre en compte une nouvelle lettre comme commande : `s` tir avec le laser dans la direction dans laquelle est le rover. 
+
+**Par exemple**
+> avec un rover à la position initiale de `(0, 0, N)`, un laser de portée 2 et un obstacle en (0, 2) si le rover reçoit la commande [s, f, f], sa nouvelle position est `(0, 2, NORTH)`.
+
 
 ## 2nd séance
 
@@ -298,8 +303,6 @@ Celle-ci leur devra leur permettre de :
 
 Imaginer une API _programmatique_ (une interface en Java) qui permette d'échanger ces informations.  
 Coder cette API dans un package différent ce celui utilisé dans la première séance.  
-Vous pouvez déplacer le code de la précédente séance dans un autre package pour plus de clarté si vous le souhaitez.  
-> attention à faire un commit différent pour le déplacement
 
 ### Concevoir le système initial (30 min)
 Dans un fichier Markdown, expliquer comment le système va fonctionner.  
@@ -336,7 +339,111 @@ Dans un nouveau document au format Markdown, décrir les étapes de la mise à j
 Il s'agira uniquement de coder la partie "serveur".  
 Pour simplifier
  * un joueur "s'authentifiera" juste avec son nom.
- * une base de donnée légère (H2) suffira
+ * l'état est stocké en mémoire ou dans une base de donnée embarquée (H2)
 
 Coder le serveur HTTP qui servira du JSON pour interagir avec les joueurs.
 Vous pouvez vous aider de tests d'intégration pour vérifier le méchanisme de sérialisation.
+
+Le serveur doit écouter sur le port 8080.
+
+Le serveur devra répondre à ces ressources :
+* `POST /api/player/{playerName}` pour créer un nouveau joueur, avec ces retours possibles :
+  * code : 201  
+    body schema :
+    ```json
+    {
+        "$schema": "http://json-schema.org/schema#",
+        "type": "object",
+        "properties": {
+            "player": {
+                "type": "object",
+                "properties": {
+                    "name": { "type": "string" },
+                    "status": { "type": "string", "enum": ["alive", "dead"]},
+                    "position": {
+                        "type": "object",
+                        "properties": {
+                            "x": { "type": "integer" },
+                            "y": { "type": "integer" },
+                            "direction": { "type": "string", "enum": ["NORTH", "EAST", "SOUTH", "WEST"]}
+                        },
+                        "additionalProperties": false,
+                        "required": ["x", "y", "direction"]
+                    },
+                    "laser-range": { "type": "integer", "exclusiveMinimum": 0 }
+                },
+                "additionalProperties": false,
+                "required": ["name", "status", "position", "laser-range"]
+            },
+            "local-map": {
+                "type": "object",
+                "properties": {
+                    "obstacles": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "x": { "type": "integer" },
+                                "y": { "type": "integer" }
+                            },
+                            "additionalProperties": false,
+                            "required": ["x", "y"]
+                        }
+                    },
+                    "players": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "name": { "type": "string" },
+                                "x": { "type": "integer" },
+                                "y": { "type": "integer" }
+                            },
+                            "additionalProperties": false,
+                            "required": ["name", "x", "y"]
+                        }
+                    }
+                },
+                "additionalProperties": false,
+                "required": ["obstacles", "players"]
+            }
+        },
+        "additionalProperties": false,
+        "required": ["player", "local-map"]
+    }
+    ```
+  * code: 409 dans le cas où un joueur de ce nom existe déjà
+
+* `GET /api/player/{playerName}` pour obtenir le statut d'un joueur, avec ces retours possibles
+  * code 200
+    même _body schema_ que le retour en succès de l'API de création
+  * code 404 quand le joueur n'existe pas
+
+* `PATCH /api/player/{playerName}/{command}` pour envoyer une commande au rover, avec les mêmes retours possibles que pour l'obtention du statut
+
+**Par exemple**
+> un retour possible est :
+```json
+{
+    "player": {
+        "name": "lol",
+        "status": "alive",
+        "position": {
+            "x": 2,
+            "y": 2,
+            "direction": "EAST"
+        },
+        "laser-range": 3
+    },
+    "local-map": {
+        "obstacles": [],
+        "players": [
+          {
+              "name": "ptdl",
+              "x": 4,
+              "y": -3
+          }
+        ]
+    }
+}
+```
